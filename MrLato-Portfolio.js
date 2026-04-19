@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            if(target) {
+            if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
             }
         });
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rootMargin: "0px 0px -50px 0px"
     };
 
-    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    const appearOnScroll = new IntersectionObserver(function (entries, observer) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
@@ -80,6 +80,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const filterValue = btn.getAttribute('data-filter');
 
+                // Toggle visibility of category titles
+                document.querySelectorAll('.gallery-grid').forEach(grid => {
+                    const title = grid.previousElementSibling;
+                    if (title && title.classList.contains('gallery-category-title')) {
+                        const hasMatch = Array.from(grid.querySelectorAll('.gallery-item')).some(item => {
+                            const categories = item.getAttribute('data-category');
+                            return filterValue === 'all' || (categories && categories.includes(filterValue));
+                        });
+                        title.style.display = hasMatch ? 'block' : 'none';
+                    }
+                });
+
                 galleryItems.forEach(item => {
                     const categories = item.getAttribute('data-category');
                     if (filterValue === 'all' || (categories && categories.includes(filterValue))) {
@@ -92,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.classList.add('hidden-item');
                         // Attendre la fin de la transition d'opacité avant de cacher l'élément
                         setTimeout(() => {
-                            if(item.classList.contains('hidden-item')) {
+                            if (item.classList.contains('hidden-item')) {
                                 item.classList.add('hide-display');
                             }
                         }, 400); // 400ms pour correspondre à une transition CSS fluide
@@ -107,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     const lightbox = document.getElementById('gallery-lightbox');
     const lightboxClose = document.querySelector('.lightbox-close');
-    
+
     // Nouveaux éléments statiques de la lightbox
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxVideo = document.getElementById('lightbox-video');
@@ -124,12 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const src = lightboxData.getAttribute('data-src');
 
                 // Cacher tous les éléments par défaut
-                if(lightboxImg) lightboxImg.style.display = 'none';
-                if(lightboxVideo) {
+                if (lightboxImg) lightboxImg.style.display = 'none';
+                if (lightboxVideo) {
                     lightboxVideo.style.display = 'none';
                     lightboxVideo.pause();
                 }
-                if(lightboxIframe) lightboxIframe.style.display = 'none';
+                if (lightboxIframe) lightboxIframe.style.display = 'none';
 
                 // Afficher l'élément correspondant
                 if (type === 'image' && lightboxImg) {
@@ -137,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     lightboxImg.style.display = 'block';
                 } else if (type === 'video' && lightboxVideo) {
                     const source = lightboxVideo.querySelector('source');
-                    if(source) source.src = src;
+                    if (source) source.src = src;
                     lightboxVideo.load();
                     lightboxVideo.style.display = 'block';
                     lightboxVideo.play();
@@ -155,13 +167,13 @@ document.addEventListener('DOMContentLoaded', () => {
             lightbox.classList.remove('active');
             // Mettre en pause et nettoyer les sources
             setTimeout(() => {
-                if(lightboxVideo) lightboxVideo.pause();
-                if(lightboxIframe) lightboxIframe.src = '';
+                if (lightboxVideo) lightboxVideo.pause();
+                if (lightboxIframe) lightboxIframe.src = '';
             }, 300);
         };
 
-        if(lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-        
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) closeLightbox();
         });
@@ -188,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             contactForm.style.display = 'none';
             successMessage.classList.remove('hidden');
-            
+
             contactForm.reset();
         });
     }
