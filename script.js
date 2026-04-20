@@ -63,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, appearOptions);
 
     faders.forEach(fader => {
-        fader.classList.add('fade-in-section');
-        appearOnScroll.observe(fader);
+        if (window.innerWidth > 768) {
+            fader.classList.add('fade-in-section');
+            appearOnScroll.observe(fader);
+        }
     });
 
     // ==========================================================================
