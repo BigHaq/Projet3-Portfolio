@@ -31,13 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Effet de défilement doux (Smooth scroll)
+    // Effet de défilement doux (Smooth scroll) - Désactivé sur mobile
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+                const isMobile = window.innerWidth <= 768;
+                target.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth' });
             }
         });
     });
