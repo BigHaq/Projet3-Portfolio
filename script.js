@@ -190,18 +190,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     const contactForm = document.getElementById('contact-form');
     const successMessage = document.getElementById('form-success-message');
+    const errorMessage = document.getElementById('form-error-message');
 
-    if (contactForm && successMessage) {
-        contactForm.addEventListener('submit', (e) => {
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // Empêche le rechargement de la page
 
-            // Ici vous pouvez ajouter un appel fetch vers Formspree si nécessaire.
-            // Actuellement, on simule juste le succès.
+            const formData = new FormData(contactForm);
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
 
-            contactForm.style.display = 'none';
-            successMessage.classList.remove('hidden');
+            submitBtn.innerHTML = 'Envoi en cours...';
+            submitBtn.disabled = true;
 
-            contactForm.reset();
+            try {
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    contactForm.style.display = 'none';
+                    if (successMessage) successMessage.style.display = 'block';
+                    if (errorMessage) errorMessage.style.display = 'none';
+                    contactForm.reset();
+                } else {
+                    if (errorMessage) errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                if (errorMessage) errorMessage.style.display = 'block';
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
         });
     }
 
