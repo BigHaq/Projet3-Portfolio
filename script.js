@@ -34,11 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Effet de défilement doux (Smooth scroll) - Désactivé sur mobile
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return; // Ignore logo link
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
+                const headerOffset = 90; // hauteur du header fixe + marge
+                const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+                const offsetPosition = elementPosition - headerOffset;
                 const isMobile = window.innerWidth <= 768;
-                target.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth' });
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: isMobile ? 'auto' : 'smooth'
+                });
             }
         });
     });
