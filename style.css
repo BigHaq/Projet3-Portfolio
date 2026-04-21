@@ -1243,7 +1243,7 @@ h4 {
 
 .footer-socials {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .footer-socials a {
@@ -1346,18 +1346,37 @@ h4 {
 /* RESPONSIVE */
 @media (max-width: 900px) {
     .footer-top {
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 3rem;
     }
 
     .footer-brand {
-        grid-column: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-}
 
-@media (max-width: 540px) {
-    .footer-top {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+    .footer-tagline {
+        max-width: 450px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .footer-socials {
+        justify-content: center;
+    }
+
+    .footer-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-nav {
+        align-items: center;
     }
 }
 
